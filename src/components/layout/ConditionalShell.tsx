@@ -5,7 +5,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ReviewsSection } from "@/components/home/ReviewsSection";
 
-const STANDALONE_ROUTES = ["/creatorsweek-gilit"];
+const STANDALONE_ROUTES = ["/", "/creatorsweek-gilit"];
 
 export function ConditionalShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
