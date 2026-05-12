@@ -78,7 +78,7 @@ function AutoCarousel() {
       initial={{ opacity: 0, scale: 0.97 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
-      className="relative aspect-[4/5] border-[4px] md:border-[6px] border-white shadow-xl overflow-hidden group bg-black"
+      className="relative aspect-[4/5] border-[4px] md:border-[6px] border-white shadow-xl overflow-hidden group"
     >
       <AnimatePresence initial={false}>
         <motion.div
@@ -86,8 +86,8 @@ function AutoCarousel() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.4, ease: "linear" }}
-          className="absolute inset-0 cursor-grab active:cursor-grabbing"
+          transition={{ duration: 0.2 }}
+          className="absolute inset-0 cursor-grab active:cursor-grabbing z-10"
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={1}
@@ -97,14 +97,14 @@ function AutoCarousel() {
             src={CAROUSEL_IMAGES[index]} 
             alt={`Curated stay ${index + 1}`} 
             fill 
-            priority={index <= 1}
+            priority
             className="object-cover pointer-events-none" 
             sizes="(max-width:1024px) 100vw, 50vw" 
           />
         </motion.div>
       </AnimatePresence>
 
-      <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-10">
+      <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-20">
         {CAROUSEL_IMAGES.map((_, i) => (
           <button 
             key={i}
@@ -141,9 +141,9 @@ function SlideCarousel() {
   };
 
   const variants = {
-    enter: (dir: number) => ({ x: dir > 0 ? "100%" : "-100%" }),
-    center: { x: 0 },
-    exit: (dir: number) => ({ x: dir > 0 ? "-100%" : "100%" }),
+    enter: (dir: number) => ({ x: dir > 0 ? "100%" : "-100%", zIndex: 10 }),
+    center: { x: 0, zIndex: 10 },
+    exit: (dir: number) => ({ x: dir > 0 ? "-20%" : "20%", zIndex: 0, opacity: 0.5 }),
   };
 
   return (
@@ -151,7 +151,7 @@ function SlideCarousel() {
       initial={{ opacity: 0, scale: 0.97 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
-      className="relative aspect-square border-[4px] md:border-[6px] border-white shadow-xl overflow-hidden group order-last lg:order-first bg-black"
+      className="relative aspect-square border-[4px] md:border-[6px] border-white shadow-xl overflow-hidden group order-last lg:order-first"
     >
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
@@ -161,7 +161,7 @@ function SlideCarousel() {
           initial="enter"
           animate="center"
           exit="exit"
-          transition={{ duration: 0.4, ease: "easeInOut" }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
           className="absolute inset-0 cursor-grab active:cursor-grabbing"
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
@@ -172,14 +172,14 @@ function SlideCarousel() {
             src={CAROUSEL_IMAGES_2[index]} 
             alt={`Looking for ${index + 1}`} 
             fill 
-            priority={index <= 1}
+            priority
             className="object-cover pointer-events-none" 
             sizes="(max-width:1024px) 100vw, 50vw" 
           />
         </motion.div>
       </AnimatePresence>
 
-      <div className="absolute top-0 bottom-0 right-4 flex flex-col justify-center gap-2 z-10">
+      <div className="absolute top-0 bottom-0 right-4 flex flex-col justify-center gap-2 z-20">
         {CAROUSEL_IMAGES_2.map((_, i) => (
           <button 
             key={i}
