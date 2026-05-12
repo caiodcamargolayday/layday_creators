@@ -7,9 +7,9 @@ import { ChevronDown, X, Camera, Utensils, Users, Sparkles, ArrowRight, Check } 
 
 // ─── Assets ──────────────────────────────────────────────────────────────────
 const ASSETS = {
-  hero:   "/experiences/golden hour 1.jpg",
-  what:   "/experiences/saturdays by the pool.jpg",
-  look:   "/experiences/golden hour 3.jpg",
+  hero:   "/layday_gilit CREATORS/golden hour 1.jpg",
+  what:   "/layday_gilit CREATORS/session 1 carrousel 1.jpg",
+  look:   "/layday_gilit CREATORS/session 2 carrousel 1.jpg",
   strip: [
     "/layday_gilit CREATORS/final section 1.jpg",
     "/layday_gilit CREATORS/final section 2.JPG",
@@ -760,7 +760,7 @@ export function CreatorWeekClient() {
       {/* ── 8. CTA BANNER ── */}
       <section className="relative bg-[#004A61] text-white py-12 md:py-16 overflow-hidden">
         <div className="absolute inset-0 z-0 opacity-10">
-          <Image src="/experiences/golden hour 4.jpg" alt="" fill className="object-cover grayscale" />
+          <Image src="/layday_gilit CREATORS/golden hour 1.jpg" alt="" fill className="object-cover grayscale" />
         </div>
         <div className="relative z-10 flex flex-col items-center text-center px-4 gap-6">
           <span className="font-bold tracking-[5px] uppercase text-[10px] text-white/60">Limited Spots Available</span>
