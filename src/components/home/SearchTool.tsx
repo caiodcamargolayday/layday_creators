@@ -20,7 +20,7 @@ const PAGES = [
   { group: "Explore",     value: "/destinations",    label: "Destinations" },
   { group: "Explore",     value: "/deals",           label: "Deals & Promos" },
   // Events
-  { group: "Events",      value: "/creator-week-gili-t", label: "🌴 Gili Creator Week" },
+  { group: "Events",      value: "/creatorsweek-gilit", label: "🌴 Gili Creator Week" },
   // Info
   { group: "Info",        value: "/careers",         label: "Careers" },
   { group: "Info",        value: "/contact-us",      label: "Contact Us" },

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: "Lay Day Hostels",
   description: "Lay Day embodies the perfect trifecta of party, surf, and relaxation.",
   icons: {
-    icon: "/logo-layday.png",
+    icon: "/favicon-creators-layday.png",
   },
 };
 
