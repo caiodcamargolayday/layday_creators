@@ -44,6 +44,10 @@ export async function POST(req: NextRequest) {
       sendCapiLeadEvent({
         email: body.email ?? "",
         phone: body.phone ?? "",
+        firstName: (body.name ?? "").split(" ")[0] ?? "",
+        lastName: (body.name ?? "").split(" ").slice(1).join(" ") ?? "",
+        fbc: body._fbc ?? "",
+        fbp: body._fbp ?? "",
         score,
         value,
         clientIp,

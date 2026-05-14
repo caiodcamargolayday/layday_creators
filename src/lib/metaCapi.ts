@@ -11,6 +11,10 @@ function sha256(value: string): string {
 export interface CapiLeadOptions {
   email: string;
   phone: string;
+  firstName: string;
+  lastName: string;
+  fbc: string;      // _fbc cookie (Facebook Click ID)
+  fbp: string;      // _fbp cookie (Facebook Browser ID)
   score: LeadScore;
   value: number;
   clientIp: string;
@@ -36,10 +40,14 @@ export async function sendCapiLeadEvent(opts: CapiLeadOptions): Promise<void> {
     action_source: "website",
     event_source_url: opts.eventSourceUrl,
     user_data: {
-      em: [sha256(opts.email)],
-      ph: [sha256(opts.phone.replace(/\s+/g, ""))],
-      client_ip_address: opts.clientIp,
-      client_user_agent: opts.clientUserAgent,
+      em: opts.email ? [sha256(opts.email)] : undefined,
+      ph: opts.phone ? [sha256(opts.phone.replace(/\s+/g, ""))] : undefined,
+      fn: opts.firstName ? [sha256(opts.firstName)] : undefined,
+      ln: opts.lastName ? [sha256(opts.lastName)] : undefined,
+      fbc: opts.fbc || undefined,
+      fbp: opts.fbp || undefined,
+      client_ip_address: opts.clientIp || undefined,
+      client_user_agent: opts.clientUserAgent || undefined,
     },
     custom_data: {
       currency: "USD",

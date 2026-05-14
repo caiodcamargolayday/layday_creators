@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { ChevronDown, ChevronLeft, X, Camera, Utensils, Users, Sparkles, ArrowRight, Check } from "lucide-react";
@@ -268,6 +268,13 @@ function FormModal({ onClose }: { onClose: () => void }) {
   const current = QUESTIONS[step];
   const progress = Math.round((step / total) * 100);
 
+  // Helper: read a cookie value by name
+  const getCookie = useCallback((name: string): string => {
+    if (typeof document === "undefined") return "";
+    const match = document.cookie.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
+    return match ? decodeURIComponent(match[1]) : "";
+  }, []);
+
   const submitToSheets = async (finalAnswers: Record<number, string>) => {
     try {
       const payload = {
@@ -292,6 +299,9 @@ function FormModal({ onClose }: { onClose: () => void }) {
         availability:         finalAnswers[14] ?? "",
         comfortable_creating: "",
         agrees_deliverables:  finalAnswers[15] ?? "",
+        // Meta CAPI matching signals
+        _fbp: getCookie("_fbp"),
+        _fbc: getCookie("_fbc"),
       };
       await fetch("/api/creator-week-apply", {
         method: "POST",
