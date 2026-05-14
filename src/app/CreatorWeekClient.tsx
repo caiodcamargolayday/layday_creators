@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { ChevronDown, X, Camera, Utensils, Users, Sparkles, ArrowRight, Check } from "lucide-react";
+import { ChevronDown, ChevronLeft, X, Camera, Utensils, Users, Sparkles, ArrowRight, Check } from "lucide-react";
 
 // ─── Assets ──────────────────────────────────────────────────────────────────
 const ASSETS = {
@@ -210,7 +210,7 @@ const QUESTIONS: Question[] = [
   { type: "text",     q: "Your phone number (with country code):", placeholder: "+61 400 000 000" },
   // ── Eligibility (indices 3-5)
   { type: "radio",    q: "Are you currently in Bali or arriving within the next 30 days?", opts: ["Yes, I'm in Bali now", "Yes, arriving soon (within 30 days)", "No"] },
-  { type: "radio",    q: "Do you actively create content on Instagram, TikTok, or both?",  opts: ["Yes", "Only Instagram", "Only TikTok", "No"] },
+  { type: "radio",    q: "Which platforms do you actively create content on?",  opts: ["Instagram & TikTok", "Instagram only", "TikTok only", "I don't actively post"] },
   { type: "radio",    q: "Would you describe yourself as a travel / lifestyle / social media content creator?", opts: ["Yes", "No"] },
   // ── Creator profile (indices 6-13)
   { type: "text",     q: "Your Instagram handle:", placeholder: "@yourhandle" },
@@ -232,7 +232,7 @@ const QUESTIONS: Question[] = [
 // Maps question index → array of disqualifying answer strings.
 const DISQUALIFY_MAP: Record<number, string[]> = {
   3:  ["No"],                               // Not in Bali / not arriving soon
-  4:  ["No"],                               // Doesn't actively create content
+  4:  ["I don't actively post"],             // Doesn't actively create content
   5:  ["No"],                               // Not a travel/lifestyle creator
   8:  ["Under 2.5k"],                       // Follower count too low
   10: ["Other"],                            // Content type not a fit
@@ -317,6 +317,10 @@ function FormModal({ onClose }: { onClose: () => void }) {
     else finishForm(answers);
   };
 
+  const prev = () => {
+    if (step > 0 && !submitting && !done) setStep((s) => s - 1);
+  };
+
   const canContinue = answers[step] !== undefined && answers[step].trim() !== "";
 
   const handleRadio = (val: string) => {
@@ -358,9 +362,19 @@ function FormModal({ onClose }: { onClose: () => void }) {
 
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-4 border-b border-[#004A61]/10">
-        <span className="font-heading tracking-widest text-sm uppercase text-[#004A61]/50">
-          Gili Creator Week — Application
-        </span>
+        {step > 0 && !done && !disqualified ? (
+          <button
+            onClick={prev}
+            className="flex items-center gap-1 text-xs font-bold uppercase tracking-widest text-[#004A61]/40 hover:text-[#004A61] transition"
+            aria-label="Go back"
+          >
+            <ChevronLeft className="w-4 h-4" /> Back
+          </button>
+        ) : (
+          <span className="font-heading tracking-widest text-sm uppercase text-[#004A61]/50">
+            Gili Creator Week — Application
+          </span>
+        )}
         <button
           onClick={onClose}
           className="w-9 h-9 flex items-center justify-center hover:bg-[#004A61]/10 rounded-full transition"
