@@ -211,7 +211,7 @@ const QUESTIONS: Question[] = [
   // ── Eligibility (indices 3-5)
   { type: "radio",    q: "Are you currently in Bali or arriving within the next 30 days?", opts: ["Yes, I'm in Bali now", "Yes, arriving soon (within 30 days)", "No"] },
   { type: "radio",    q: "Which platforms do you actively create content on?",  opts: ["Instagram & TikTok", "Instagram only", "TikTok only", "I don't actively post"] },
-  { type: "radio",    q: "Would you describe yourself as a travel / lifestyle / social media content creator?", opts: ["Yes", "No"] },
+  { type: "radio",    q: "How would you describe yourself as a creator?", opts: ["Travel creator", "Lifestyle creator", "Social media / entertainment creator", "I'm not really a creator"] },
   // ── Creator profile (indices 6-13)
   { type: "text",     q: "Your Instagram handle:", placeholder: "@yourhandle" },
   { type: "text",     q: "Your TikTok handle (if applicable):", placeholder: "@yourhandle" },
@@ -233,7 +233,7 @@ const QUESTIONS: Question[] = [
 const DISQUALIFY_MAP: Record<number, string[]> = {
   3:  ["No"],                               // Not in Bali / not arriving soon
   4:  ["I don't actively post"],             // Doesn't actively create content
-  5:  ["No"],                               // Not a travel/lifestyle creator
+  5:  ["I'm not really a creator"],           // Not a travel/lifestyle creator
   8:  ["Under 2.5k"],                       // Follower count too low
   10: ["Other"],                            // Content type not a fit
   11: ["Under 3%", "I don't know"],         // Low/unknown engagement
