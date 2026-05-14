@@ -228,9 +228,19 @@ const QUESTIONS: Question[] = [
   { type: "textarea", q: "Why do you want to join GILI CREATOR WEEK at Lay Day Gili T?", placeholder: "Tell us…" },
 ];
 
-// Question indices that disqualify on "No"
-// 3=in Bali, 5=is creator, 15=agrees deliverables
-const DISQUALIFY_ON_NO = new Set([3, 5, 15]);
+// Answers that immediately disqualify a lead and exit the form.
+// Maps question index → array of disqualifying answer strings.
+const DISQUALIFY_MAP: Record<number, string[]> = {
+  3:  ["No"],                               // Not in Bali / not arriving soon
+  4:  ["No"],                               // Doesn't actively create content
+  5:  ["No"],                               // Not a travel/lifestyle creator
+  8:  ["Under 2.5k"],                       // Follower count too low
+  10: ["Other"],                            // Content type not a fit
+  11: ["Under 3%", "I don't know"],         // Low/unknown engagement
+  12: ["No"],                              // No brand experience at all
+  14: ["No"],                              // Not available
+  15: ["No"],                              // Won't agree to deliverables
+};
 
 // WhatsApp CTA
 const WA_NUMBER = "61411551667";
@@ -316,8 +326,9 @@ function FormModal({ onClose }: { onClose: () => void }) {
     
     // Use a small delay for visual feedback, but block further clicks
     setTimeout(() => {
-      // Eligibility gate: disqualify on "No" for critical questions
-      if (DISQUALIFY_ON_NO.has(step) && val === "No") {
+      // Eligibility gate: kick out bad leads immediately
+      const badAnswers = DISQUALIFY_MAP[step];
+      if (badAnswers && badAnswers.includes(val)) {
         setDisqualified(true);
         return;
       }
@@ -371,11 +382,12 @@ function FormModal({ onClose }: { onClose: () => void }) {
           >
             <span className="text-5xl">🌴</span>
             <h2 className="font-heading text-3xl md:text-4xl tracking-widest uppercase leading-tight">
-              Thanks for your <span className="text-[#EE5B2B]">interest!</span>
+              Your moment <span className="text-[#EE5B2B]">is coming.</span>
             </h2>
             <p className="text-sm font-medium opacity-70 leading-relaxed max-w-sm">
-              This experience is currently only open to creators who are in Bali or traveling there soon.
-              Follow us for future opportunities — more creator weeks are coming! 🌴
+              This round isn&apos;t the right fit just yet — but that&apos;s okay.
+              Keep creating, keep growing, and stay close. We host Creator Weeks
+              regularly and we&apos;d absolutely love to have you on a future one. 🌴
             </p>
             <a
               href="https://www.instagram.com/laydaygilit"
