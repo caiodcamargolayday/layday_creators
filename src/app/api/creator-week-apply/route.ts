@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { scoreCreatorLead } from "@/lib/leadScoring";
 import { sendCapiLeadEvent } from "@/lib/metaCapi";
+import { sendConfirmationEmail } from "@/lib/sendConfirmationEmail";
 
 // POST /api/creator-week-apply
 // Forwards form answers to Google Sheets + fires Meta CAPI Lead event.
@@ -34,7 +35,7 @@ export async function POST(req: NextRequest) {
     console.log(`[Apply] Received lead — score: ${score} (${points} pts)`);
 
     // Run Sheets + CAPI in parallel. CAPI failure never blocks the Sheets submission.
-    const [sheetsResult, capiResult] = await Promise.allSettled([
+    const [sheetsResult, capiResult, emailResult] = await Promise.allSettled([
       fetch(APPS_SCRIPT_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -49,6 +50,7 @@ export async function POST(req: NextRequest) {
         clientUserAgent,
         eventSourceUrl,
       }),
+      sendConfirmationEmail(body.email ?? "", body.name ?? ""),
     ]);
 
     if (sheetsResult.status === "rejected") {
@@ -56,6 +58,9 @@ export async function POST(req: NextRequest) {
     }
     if (capiResult.status === "rejected") {
       console.error("[Apply] CAPI submission failed:", capiResult.reason);
+    }
+    if (emailResult.status === "rejected") {
+      console.error("[Apply] Confirmation email failed:", emailResult.reason);
     }
 
     // Sheets is the source of truth — fail if it didn't go through
