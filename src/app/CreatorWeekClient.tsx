@@ -204,15 +204,16 @@ type Question =
   | { type: "textarea"; q: string; placeholder: string };
 
 const QUESTIONS: Question[] = [
-  // ── Contact info (indices 0-2)
+  // ── Contact info (indices 0-3)
   { type: "text",     q: "What's your name?", placeholder: "Your full name" },
   { type: "text",     q: "Your email address:", placeholder: "hello@email.com" },
   { type: "text",     q: "Your phone number (with country code):", placeholder: "+61 400 000 000" },
-  // ── Eligibility (indices 3-5)
+  { type: "text",     q: "Your nationality:", placeholder: "e.g. Australian, British, Indonesian" },
+  // ── Eligibility (indices 4-6)
   { type: "radio",    q: "Are you currently in Bali or arriving within the next 30 days?", opts: ["Yes, I'm in Bali now", "Yes, arriving soon (within 30 days)", "No"] },
   { type: "radio",    q: "Which platforms do you actively create content on?",  opts: ["Instagram & TikTok", "Instagram only", "TikTok only", "I don't actively post"] },
   { type: "radio",    q: "How would you describe yourself as a creator?", opts: ["Travel creator", "Lifestyle creator", "Social media / entertainment creator", "I'm not really a creator"] },
-  // ── Creator profile (indices 6-13)
+  // ── Creator profile (indices 7-14)
   { type: "text",     q: "Your Instagram handle:", placeholder: "@yourhandle" },
   { type: "text",     q: "Your TikTok handle (if applicable):", placeholder: "@yourhandle" },
   { type: "radio",    q: "Approximate follower count:", opts: ["Under 2.5k", "5k–20k", "20k–100k", "100k+"] },
@@ -221,34 +222,34 @@ const QUESTIONS: Question[] = [
   { type: "radio",    q: "What is your average engagement rate on recent posts?", opts: ["I don't know", "Under 3%", "3–6%", "6–10%", "10%+", "Not sure but I get consistent engagement"] },
   { type: "radio",    q: "Have you worked with any brands before?", opts: ["Yes, multiple collaborations", "Yes, a few collaborations", "No", "Not officially, but I've created UGC-style content"] },
   { type: "textarea", q: "If yes, please list previous brand collaborations:", placeholder: "Names…" },
-  // ── Commitment (indices 14-15)
+  // ── Commitment (indices 15-16)
   { type: "radio",    q: "Are you available for a 2–3 day creator trip in Gili T at the end of this month?", opts: ["Yes, fully available", "Mostly available (please explain)", "No"] },
   { type: "radio",    q: "Do you agree to the deliverables (2-4 Reels/TikToks, 5–10 Stories, 1 feed post, tagging @laydaygilit, content usage rights)?", opts: ["Yes", "No"] },
-  // ── Motivation (indices 16)
+  // ── Motivation (indices 17)
   { type: "textarea", q: "Why do you want to join GILI CREATOR WEEK at Lay Day Gili T?", placeholder: "Tell us…" },
 ];
 
 // Answers that immediately disqualify a lead and exit the form.
 // Maps question index → array of disqualifying answer strings.
 const DISQUALIFY_MAP: Record<number, string[]> = {
-  3:  ["No"],                               // Not in Bali / not arriving soon
-  4:  ["I don't actively post"],             // Doesn't actively create content
-  5:  ["I'm not really a creator"],           // Not a travel/lifestyle creator
-  8:  ["Under 2.5k"],                       // Follower count too low
-  10: ["Other"],                            // Content type not a fit
-  11: ["Under 3%", "I don't know"],         // Low/unknown engagement
-  12: ["No"],                              // No brand experience at all
-  14: ["No"],                              // Not available
-  15: ["No"],                              // Won't agree to deliverables
+  4:  ["No"],                               // Not in Bali / not arriving soon
+  5:  ["I don't actively post"],             // Doesn't actively create content
+  6:  ["I'm not really a creator"],           // Not a travel/lifestyle creator
+  9:  ["Under 2.5k"],                       // Follower count too low
+  11: ["Other"],                            // Content type not a fit
+  12: ["Under 3%", "I don't know"],         // Low/unknown engagement
+  13: ["No"],                              // No brand experience at all
+  15: ["No"],                              // Not available
+  16: ["No"],                              // Won't agree to deliverables
 };
 
 // WhatsApp CTA
 const WA_NUMBER = "61411551667";
 function buildWALink(answers: Record<number, string>) {
   const name = answers[0] ? answers[0] : "there";
-  const handle = answers[6] ? answers[6] : "(see application)";
-  const followers = answers[8] ? answers[8] : "unknown";
-  const contentType = answers[10] ? answers[10] : "mixed";
+  const handle = answers[7] ? answers[7] : "(see application)";
+  const followers = answers[9] ? answers[9] : "unknown";
+  const contentType = answers[11] ? answers[11] : "mixed";
   const msg = encodeURIComponent(
     `Hey! 👋 My name is ${name} and I just filled out the application for the Gili Creator Week at Lay Day Gili T.\n\n` +
     `My Instagram is ${handle}, I create ${contentType.toLowerCase()} content and have around ${followers} followers.\n\n` +
@@ -282,23 +283,24 @@ function FormModal({ onClose }: { onClose: () => void }) {
         name:                 finalAnswers[0]  ?? "",
         email:                finalAnswers[1]  ?? "",
         phone:                finalAnswers[2]  ?? "",
-        in_bali:              finalAnswers[3]  ?? "",
-        creates_content:      finalAnswers[4]  ?? "",
-        is_creator:           finalAnswers[5]  ?? "",
-        instagram_handle:     finalAnswers[6]  ?? "",
-        tiktok_handle:        finalAnswers[7]  ?? "",
-        follower_count:       finalAnswers[8]  ?? "",
-        audience_location:    finalAnswers[9]  ?? "",
+        nationality:          finalAnswers[3]  ?? "",
+        in_bali:              finalAnswers[4]  ?? "",
+        creates_content:      finalAnswers[5]  ?? "",
+        is_creator:           finalAnswers[6]  ?? "",
+        instagram_handle:     finalAnswers[7]  ?? "",
+        tiktok_handle:        finalAnswers[8]  ?? "",
+        follower_count:       finalAnswers[9]  ?? "",
+        audience_location:    finalAnswers[10] ?? "",
         best_posts:           "",
-        content_type:         finalAnswers[10] ?? "",
-        engagement_rate:      finalAnswers[11] ?? "",
-        brand_experience:     finalAnswers[12] ?? "",
-        brand_links:          finalAnswers[13] ?? "",
-        why_join:             finalAnswers[16] ?? "",
+        content_type:         finalAnswers[11] ?? "",
+        engagement_rate:      finalAnswers[12] ?? "",
+        brand_experience:     finalAnswers[13] ?? "",
+        brand_links:          finalAnswers[14] ?? "",
+        why_join:             finalAnswers[17] ?? "",
         what_they_bring:      "",
-        availability:         finalAnswers[14] ?? "",
+        availability:         finalAnswers[15] ?? "",
         comfortable_creating: "",
-        agrees_deliverables:  finalAnswers[15] ?? "",
+        agrees_deliverables:  finalAnswers[16] ?? "",
         // Meta CAPI matching signals
         _fbp: getCookie("_fbp"),
         _fbc: getCookie("_fbc"),
@@ -323,6 +325,16 @@ function FormModal({ onClose }: { onClose: () => void }) {
 
   const next = () => {
     if (submitting || done) return;
+
+    // Nationality check: if they input "Indonesia", "Indonesian", or "Indo", drop them off immediately.
+    if (step === 3) {
+      const val = (answers[3] ?? "").trim().toLowerCase();
+      if (val.includes("indonesia") || val.includes("indonesian") || val === "indo") {
+        setDisqualified(true);
+        return;
+      }
+    }
+
     if (step < total - 1) setStep((s) => s + 1);
     else finishForm(answers);
   };
